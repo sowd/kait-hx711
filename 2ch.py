@@ -75,13 +75,14 @@ while True:
 
         # To get weight from both channels (if you have load cells hooked up 
         # to both channel A and B), do something like this
-        val_A = hx.get_weight_A(5)
-        val_B = hx.get_weight_B(5)
+        av_num = 1
+        val_A = hx.get_weight_A(av_num)
+        val_B = hx.get_weight_B(av_num)
         #print "A: %s  B: %s" % ( val_A, val_B )
-        val_A2 = hx2.get_weight_A(5)
-        val_B2 = hx2.get_weight_B(5)
+        val_A2 = hx2.get_weight_A(av_num)
+        val_B2 = hx2.get_weight_B(av_num)
         #print "A2: %s  B2: %s" % ( val_A2, val_B2 )
-        print "A: %s  B: %s  A2: %s  B2: %s" % ( val_A, val_B, val_A2, val_B2 )
+        print( "A: %s  B: %s  A2: %s  B2: %s" % ( val_A, val_B, val_A2, val_B2 ) )
 
         hx.power_down()
         hx.power_up()
