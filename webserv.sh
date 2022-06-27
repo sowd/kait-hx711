@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 # Inspired by:
 # https://github.com/tatobari/hx711py
@@ -19,15 +19,15 @@ PORT_NUM=8080
 referenceUnit = 1
 EMULATE_HX711=False
 
-BOARD_1_CK, BOARD_1_DT = 5,6
-BOARD_2_CK, BOARD_2_DT = 27,22
+BOARD_1_CK,BOARD_1_DT = 5,6
+BOARD_2_CK,BOARD_2_DT = 27,22
 
 # The code below
-import sys, argparse, json
+import sys, argparse, json, time
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
 from urllib.parse import urlparse
 #from urllib.parse import parse_qs
+from threading import Thread
 import socket
 hostnam = socket.gethostname()+'.local'
 
@@ -38,8 +38,8 @@ if not EMULATE_HX711:
 else:
     from emulated_hx711 import HX711
 
-def initSensor(pin_clock,pin_out):
-    hx = HX711(pin_clock,pin_out)
+def initSensor(pin_clock,pin_data):
+    hx = HX711(pin_data,pin_clock)
     # According to https://github.com/tatobari/hx711py/blob/master/example.py
     # If you're experiencing super random values, change first value to LSB until to get more stable values.
     hx.set_reading_format("MSB", "MSB")
@@ -57,8 +57,7 @@ def getSensorVal(hx):
     try:
         val_A = hx.get_weight_A(5)
         val_B = hx.get_weight_B(5)
-        ##print "A2: %s  B2: %s" % ( val_A2, val_B2 )
-        #print "A: %s  B: %s  A2: %s  B2: %s" % ( val_A, val_B, val_A2, val_B2 )
+        #print "A2: %s  B2: %s" % ( val_A2, val_B2 )
 
         hx.power_down()
         hx.power_up()
@@ -81,6 +80,26 @@ def sensorCleanAndExit():
 hx1 = initSensor(BOARD_1_CK, BOARD_1_DT)
 hx2 = initSensor(BOARD_2_CK, BOARD_2_DT)
 
+s1A,s1B,s2A,s2B = -1,-1,-1,-1
+
+def accessSensor():
+    global s1A,s1B,s2A,s2B
+    while True:
+      print('New sensor vals..', end='')
+      try:
+        s1A,s1B = getSensorVal(hx1)
+        s2A,s2B = getSensorVal(hx2)
+        print(": A: %s  B: %s  A2: %s  B2: %s" % ( val_A, val_B, val_A2, val_B2 ))
+        time.sleep(0.1)
+      except (KeyboardInterrupt, SystemExit):
+        print("")
+        sensorCleanAndExit()
+
+#thr = Thread(target=accessSensor,args=(target_time,))
+thr = Thread(target=accessSensor)
+#const thr = Thread(target=accessSensor,args=(hx1))
+thr.start()
+
 ##############################################
 ###### JSONP API server setup
 ###### https://qiita.com/komorin0521/items/dfc02444a60180688e43
@@ -92,8 +111,8 @@ class MyHandler(BaseHTTPRequestHandler):
             #requestBody = json.loads(self.rfile.read(content_len).decode('utf-8'))
             parsed = urlparse(self.path)
 
-            s1A,s1B = getSensorVal(hx1)
-            s2A,s2B = getSensorVal(hx2)
+            #s1A,s1B = getSensorVal(hx1)
+            #s2A,s2B = getSensorVal(hx2)
 
             responseObjStr = '{"sensor0":"%d","sensor1":"%d","sensor2":"%d","sensor3":"%d"}' % (s1A,s1B,s2A,s2B)
 

@@ -20,7 +20,7 @@ $ python3 setup.py install
 ## Run
 
 ~~~bash
-$ python3 webserv.py
+$ ./webserv.sh
 ~~~
 
 ## Access
@@ -33,6 +33,21 @@ JSONP
 ~~~bash
 curl "http://hostname:8080?callback=abcdefg"
 ~~~
+
+## Autorun
+
+```
+$ crontab -e
+```
+
+then add the following line.
+
+```
+@reboot /home/pi/kait-hx711/webserv.sh
+```
+
+Default port is 8080. If you want to modify, supply -P option.
+
 
 The original README is shown below.
 
