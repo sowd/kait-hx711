@@ -1,29 +1,35 @@
-#! /usr/bin/python2
+#! /usr/bin/python3
 
+# Inspired by:
 # https://github.com/tatobari/hx711py
 # Sample: https://github.com/tatobari/hx711py/blob/master/example.py
 
-import sys
-# webAPI port name
+# Settings:
+
+## webAPI port name
 PORT_NUM=8080
 
-import argparse, json
+## Sensor common settings
+## According to https://github.com/tatobari/hx711py/blob/master/example.py
+## HOW TO CALCULATE THE REFFERENCE UNIT
+## To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
+## In this case, 92 is 1 gram because, with 1 as a reference unit I got numbers near 0 without any weight
+## and I got numbers around 184000 when I added 2kg. So, according to the rule of thirds:
+## If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
+referenceUnit = 1
+EMULATE_HX711=False
+
+BOARD_1_CK, BOARD_1_DT = 5,6
+BOARD_2_CK, BOARD_2_DT = 27,22
+
+# The code below
+import sys, argparse, json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from urllib.parse import urlparse
 #from urllib.parse import parse_qs
 import socket
 hostnam = socket.gethostname()+'.local'
-
-# Sensor common settings
-# According to https://github.com/tatobari/hx711py/blob/master/example.py
-# HOW TO CALCULATE THE REFFERENCE UNIT
-# To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
-# In this case, 92 is 1 gram because, with 1 as a reference unit I got numbers near 0 without any weight
-# and I got numbers around 184000 when I added 2kg. So, according to the rule of thirds:
-# If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
-referenceUnit = 1
-EMULATE_HX711=False
 
 # sensor library init
 if not EMULATE_HX711:
@@ -72,8 +78,8 @@ def sensorCleanAndExit():
     print("Bye!")
     sys.exit()
 
-hx1 = initSensor(5, 6)
-hx2 = initSensor(27, 22)
+hx1 = initSensor(BOARD_1_CK, BOARD_1_DT)
+hx2 = initSensor(BOARD_2_CK, BOARD_2_DT)
 
 ##############################################
 ###### JSONP API server setup

@@ -1,4 +1,45 @@
+# Dual HX700 Server for RasPi, accessible by JSONP
+
+This code is based on [Tatobari's hx711py repo](https://github.com/tatobari/hx711py)
+
+## Install / Run
+
+Connect two HX700 boards to RasPi GPIO pins. The connected pin numbers should be written in webserv.py
+
+~~~python:webserv.py
+BOARD_1_CK, BOARD_1_DT = 5,6
+BOARD_2_CK, BOARD_2_DT = 27,22
+~~~
+
+Then install necessary libs
+
+~~~bash
+$ python3 setup.py install
+~~~
+
+## Run
+
+~~~bash
+$ python3 webserv.py
+~~~
+
+## Access
+
+HTTP
+~~~bash
+curl http://hostname:8080
+~~~
+JSONP
+~~~bash
+curl "http://hostname:8080?callback=abcdefg"
+~~~
+
+The original README is shown below.
+
+----
+
 # HX711 for Raspbery Py
+
 ----
 Quick code credited to [underdoeg](https://github.com/underdoeg/)'s [Gist HX711.py](https://gist.github.com/underdoeg/98a38b54f889fce2b237).
 I've only made a few modifications on the way the captured bits are processed and to support Two's Complement, which it didn't.
