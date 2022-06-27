@@ -53,6 +53,7 @@ def initSensor(pin_clock,pin_data):
 
     return hx
 
+
 def getSensorVal(hx):
     try:
         val_A = hx.get_weight_A(5)
@@ -80,16 +81,20 @@ def sensorCleanAndExit():
 hx1 = initSensor(BOARD_1_CK, BOARD_1_DT)
 hx2 = initSensor(BOARD_2_CK, BOARD_2_DT)
 
-s1A,s1B,s2A,s2B = -1,-1,-1,-1
+#s1A,s1B,s2A,s2B = -1,-1,-1,-1
 
+sensorLog = []
 def accessSensor():
-    global s1A,s1B,s2A,s2B
+    global sensorLog
     while True:
       print('New sensor vals..', end='')
       try:
         s1A,s1B = getSensorVal(hx1)
         s2A,s2B = getSensorVal(hx2)
-        print(": A: %s  B: %s  A2: %s  B2: %s" % ( val_A, val_B, val_A2, val_B2 ))
+        print("Sensor value: A1: %s  B1: %s  A2: %s  B2: %s" % ( s1A, s1B, s2A, s2B ))
+        newLog ="[%f,%s,%s,%s,%s]" % ( time.time(),s1A, s1B, s2A, s2B )
+        sensorLog.append(newLog)
+
         time.sleep(0.1)
       except (KeyboardInterrupt, SystemExit):
         print("")
@@ -105,6 +110,7 @@ thr.start()
 ###### https://qiita.com/komorin0521/items/dfc02444a60180688e43
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        global sensorLog
         responseObjStr = '{}'
         try:
             #content_len=int(self.headers.get('content-length'))
@@ -113,8 +119,13 @@ class MyHandler(BaseHTTPRequestHandler):
 
             #s1A,s1B = getSensorVal(hx1)
             #s2A,s2B = getSensorVal(hx2)
+            log = sensorLog
+            sensorLog = []
 
-            responseObjStr = '{"sensor0":"%d","sensor1":"%d","sensor2":"%d","sensor3":"%d"}' % (s1A,s1B,s2A,s2B)
+            log = ",".join( log )
+
+
+            responseObjStr = '{"sensorlog":[%s]}' % log
 
         except Exception as e:
 
