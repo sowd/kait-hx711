@@ -1,3 +1,5 @@
+// Estimate raw value -> gram mapping by Gram = a * RawValue + b
+// Using least square fitting
 // https://qiita.com/quzq/items/c1a4929f47d986b0f77f
 
 const A1 = [ // x:gram,  y:value

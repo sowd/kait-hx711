@@ -53,6 +53,11 @@ The original README is shown below.
 
 ----
 
+# Calibrate
+
+calibrate-estimate.js eEstimates raw value -> gram mapping by Gram = a * RawValue + b 
+using least square fitting
+
 # HX711 for Raspbery Py
 
 ----

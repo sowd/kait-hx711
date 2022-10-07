@@ -98,9 +98,10 @@ def accessSensor():
       try:
         s1A,s1B = getSensorVal(hx1)
         s2A,s2B = getSensorVal(hx2)
-        print("Sensor value: A1: %s  B1: %s  A2: %s  B2: %s" % ( s1A, s1B, s2A, s2B ))
-        print("by Grams: A1: %dg  B1: %dg  A2: %dg  B2: %dg" % ( int(A1p[0]*s1A+A1p[1]), int(B1p[0]*s1B+B1p[1]), int(A2p[0]*s2A+A2p[1]), int(B2p[0]*s2B+B2p[1]) ))
-        newLog ="[%f,%s,%s,%s,%s]" % ( time.time(),s1A, s1B, s2A, s2B )
+        #print("Sensor value: A1: %s  B1: %s  A2: %s  B2: %s" % ( s1A, s1B, s2A, s2B ))
+        g1,g2,g3,g4 = A1p[0]*s1A+A1p[1], B1p[0]*s1B+B1p[1], A2p[0]*s2A+A2p[1], B2p[0]*s2B+B2p[1]
+        print("Total: %dg  A1: %dg  B1: %dg  A2: %dg  B2: %dg " % ( int(g1+g2+g3+g4),int(g1),int(g2),int(g3),int(g4)) )
+        newLog ="[%d,%f,%f,%f,%f,%f]" % ( time.time(),g1+g2+g3+g4,g1,g2,g3,g4)
         sensorLog.append(newLog)
 
         time.sleep(0.1)
