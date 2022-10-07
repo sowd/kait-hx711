@@ -22,6 +22,13 @@ EMULATE_HX711=False
 BOARD_1_CK,BOARD_1_DT = 5,6
 BOARD_2_CK,BOARD_2_DT = 27,22
 
+# Estimate_params
+A1p = [0.0020680475510323967,-7.459194297264942]
+B1p = [0.008817193618583824,-4.63981885658602]
+A2p = [0.0022655544150686335,-1.974251537515449]
+B2p = [0.00875250101106832,-4.737330347555451]
+
+
 # The code below
 import sys, argparse, json, time
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -92,6 +99,7 @@ def accessSensor():
         s1A,s1B = getSensorVal(hx1)
         s2A,s2B = getSensorVal(hx2)
         print("Sensor value: A1: %s  B1: %s  A2: %s  B2: %s" % ( s1A, s1B, s2A, s2B ))
+        print("by Grams: A1: %dg  B1: %dg  A2: %dg  B2: %dg" % ( int(A1p[0]*s1A+A1p[1]), int(B1p[0]*s1B+B1p[1]), int(A2p[0]*s2A+A2p[1]), int(B2p[0]*s2B+B2p[1]) ))
         newLog ="[%f,%s,%s,%s,%s]" % ( time.time(),s1A, s1B, s2A, s2B )
         sensorLog.append(newLog)
 
