@@ -1,6 +1,7 @@
 # Dual HX700 Server for RasPi, accessible by JSONP
 
-This code is based on [Tatobari's hx711py repo](https://github.com/tatobari/hx711py)
+This code is based on [Tatobari's hx711py repo](https://github.com/tatobari/hx711py), [bleno / pybleno で Raspberry Pi を BLE Peripheral として動かしてみる
+](https://qiita.com/comachi/items/c494e0d6c6d1775a3748), [WebブラウザからBLE接続 WEB Bluetooth APIでNotificationを受け取る方法](https://masato-ka.hatenablog.com/entry/2017/09/24/151251).
 
 ## Install / Run
 
@@ -13,19 +14,36 @@ BOARD_2_CK, BOARD_2_DT = 27,22
 
 Then install necessary libs
 
+#### BLE version
+~~~bash
+sudo pip3 install pybleno
+~~~
+
+#### HTTP version
 ~~~bash
 $ python3 setup.py install
 ~~~
 
 ## Run
 
+#### BLE version
+~~~bash
+$ sudo ./ble.sh
+~~~
+
+#### HTTP version
 ~~~bash
 $ ./webserv.sh
 ~~~
 
 ## Access
 
-HTTP
+#### BLE version
+
+[https://sowd.github.io/kait-hx711/](https://sowd.github.io/kait-hx711/)
+
+#### HTTP version
+
 ~~~bash
 curl http://hostname:8080
 ~~~

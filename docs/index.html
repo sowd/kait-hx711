@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <script>
+            // https://masato-ka.hatenablog.com/entry/2017/09/24/151251
+            const SensorServiceUUID = "9D4B0A98-27C0-4D28-8481-C49A64DF22A5".toLowerCase();
+            const LatestDataUUID = "B665242B-1F1F-4122-AB17-F9EF0805ADC8".toLowerCase();
+
+            function onStartNotify() {
+                navigator.bluetooth.requestDevice(
+                    { acceptAllDevices:true,optionalServices:[SensorServiceUUID] } // (1)
+                ) 
+                    .then(device => device.gatt.connect())//(2)
+                    .then(server => server.getPrimaryService(SensorServiceUUID))
+                    .then(service => service.getCharacteristic(LatestDataUUID))
+                    .then(characteristic =>{
+                        characteristic.addEventListener('characteristicvaluechanged', onRecvSensorData); //(3)
+                        characteristic.startNotifications();//(4)
+                    })
+
+            }     
+
+            let c = 0;
+            function onRecvSensorData(event) {
+                const characteristic = event.target;
+                const value = characteristic.value;
+                const grams_str = (new TextDecoder('utf-8')).decode(value.buffer);
+                const grams = parseInt(grams_str);
+                console.log(grams+'g');
+
+                document.getElementById("output").innerHTML
+                    = `${++c}: ${grams}g <br />` + document.getElementById("output").innerHTML;
+            }
+        </script>
+    </head>
+    <body>
+        <input type='button' onclick="onStartNotify()" value="Connect!" />
+        <hr />
+        <span id='output'></span>
+    </body>
+</html>
