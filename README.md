@@ -3,7 +3,7 @@
 This code is based on [Tatobari's hx711py repo](https://github.com/tatobari/hx711py), [bleno / pybleno で Raspberry Pi を BLE Peripheral として動かしてみる
 ](https://qiita.com/comachi/items/c494e0d6c6d1775a3748), [WebブラウザからBLE接続 WEB Bluetooth APIでNotificationを受け取る方法](https://masato-ka.hatenablog.com/entry/2017/09/24/151251).
 
-## Install / Run (BLE version)
+## Hardware connection
 
 Connect two HX700 boards to RasPi GPIO pins. The connected pin numbers should be written in ble.sh & webserv.py
 
