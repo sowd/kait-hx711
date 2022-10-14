@@ -3,46 +3,62 @@
 This code is based on [Tatobari's hx711py repo](https://github.com/tatobari/hx711py), [bleno / pybleno で Raspberry Pi を BLE Peripheral として動かしてみる
 ](https://qiita.com/comachi/items/c494e0d6c6d1775a3748), [WebブラウザからBLE接続 WEB Bluetooth APIでNotificationを受け取る方法](https://masato-ka.hatenablog.com/entry/2017/09/24/151251).
 
-## Install / Run
+## Install / Run (BLE version)
 
-Connect two HX700 boards to RasPi GPIO pins. The connected pin numbers should be written in webserv.py
+Connect two HX700 boards to RasPi GPIO pins. The connected pin numbers should be written in ble.sh & webserv.py
 
-~~~python:webserv.py
+~~~python:ble.sh, webserv.py
 BOARD_1_CK, BOARD_1_DT = 5,6
 BOARD_2_CK, BOARD_2_DT = 27,22
 ~~~
 
-Then install necessary libs
+## Install / Run (BLE version)
 
-#### BLE version
+1. install necessary libs
+
 ~~~bash
 sudo pip3 install pybleno
 ~~~
 
-#### HTTP version
-~~~bash
-$ python3 setup.py install
-~~~
+2. run
 
-## Run
-
-#### BLE version
 ~~~bash
 $ sudo ./ble.sh
 ~~~
 
-#### HTTP version
+3. Access
+
+[https://sowd.github.io/kait-hx711/](https://sowd.github.io/kait-hx711/)
+
+4. Autorun
+
+```
+$ sudo crontab -e
+```
+
+then add the following line.
+
+```
+@reboot /home/pi/kait-hx711/ble.sh
+```
+
+## Install / Run (HTTP version)
+
+1. install necessary libs
+
+~~~bash
+$ python3 setup.py install
+~~~
+
+2. run
+
 ~~~bash
 $ ./webserv.sh
 ~~~
 
-## Access
+3. Access
 
-#### BLE version
-
-[https://sowd.github.io/kait-hx711/](https://sowd.github.io/kait-hx711/)
-
-#### HTTP version
+Default port is 8080. If you want to modify, supply -P option.
 
 ~~~bash
 curl http://hostname:8080
@@ -52,7 +68,7 @@ JSONP
 curl "http://hostname:8080?callback=abcdefg"
 ~~~
 
-## Autorun
+4. Autorun
 
 ```
 $ crontab -e
@@ -64,9 +80,7 @@ then add the following line.
 @reboot /home/pi/kait-hx711/webserv.sh
 ```
 
-Default port is 8080. If you want to modify, supply -P option.
-
-
+<hr />
 The original README is shown below.
 
 ----
