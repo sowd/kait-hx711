@@ -26,6 +26,8 @@ B2p = [0.00875250101106832,-4.737330347555451]
 import sys,time
 from threading import Thread
 
+time.sleep(15)
+
 # sensor library init
 if not EMULATE_HX711:
     import RPi.GPIO as GPIO
