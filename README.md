@@ -1,11 +1,8 @@
-# Dual HX700 Server for RasPi, accessible by JSONP
-
-This code is based on [Tatobari's hx711py repo](https://github.com/tatobari/hx711py), [bleno / pybleno で Raspberry Pi を BLE Peripheral として動かしてみる
-](https://qiita.com/comachi/items/c494e0d6c6d1775a3748), [WebブラウザからBLE接続 WEB Bluetooth APIでNotificationを受け取る方法](https://masato-ka.hatenablog.com/entry/2017/09/24/151251).
+# Dual HX711 Server for RasPi, accessible by JSONP
 
 ## Hardware connection
 
-Connect two HX700 boards to RasPi GPIO pins. The connected pin numbers should be written in ble.sh & webserv.py
+Connect two HX711 boards to RasPi GPIO pins. The connected pin numbers should be written in ble.sh & webserv.py
 
 ~~~python:ble.sh, webserv.py
 BOARD_1_CK, BOARD_1_DT = 5,6
@@ -79,20 +76,25 @@ then add the following line.
 ```
 @reboot /home/pi/kait-hx711/webserv.sh
 ```
-
-<hr />
-The original README is shown below.
-
-----
-
-# Calibrate
+## Calibrate
 
 calibrate-estimate.js eEstimates raw value -> gram mapping by Gram = a * RawValue + b 
 using least square fitting
 
+
+## References
+
++ [Tatobari's hx711py repo](https://github.com/tatobari/hx711py)
++ [bleno / pybleno で Raspberry Pi を BLE Peripheral として動かしてみる
+](https://qiita.com/comachi/items/c494e0d6c6d1775a3748)
++ [WebブラウザからBLE接続 WEB Bluetooth APIでNotificationを受け取る方法](https://masato-ka.hatenablog.com/entry/2017/09/24/151251).
+
+<hr /><hr /><hr />
+
+The original README of [Tatobari's hx711py repo](https://github.com/tatobari/hx711py) follows.
+
 # HX711 for Raspbery Py
 
-----
 Quick code credited to [underdoeg](https://github.com/underdoeg/)'s [Gist HX711.py](https://gist.github.com/underdoeg/98a38b54f889fce2b237).
 I've only made a few modifications on the way the captured bits are processed and to support Two's Complement, which it didn't.
 
