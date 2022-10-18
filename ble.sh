@@ -17,10 +17,15 @@ BOARD_1_CK,BOARD_1_DT = 5,6
 BOARD_2_CK,BOARD_2_DT = 27,22
 
 # Estimate_params
-A1p = [0.0020680475510323967,-7.459194297264942]
-B1p = [0.008817193618583824,-4.63981885658602]
-A2p = [0.0022655544150686335,-1.974251537515449]
-B2p = [0.00875250101106832,-4.737330347555451]
+A1p = [0.002047029475215862,-4.50840317421629] # err = 204.34630949982747
+B1p = [0.008667032720886645,0.2777067962446386] # err = 370.5463062204966
+A2p = [0.002255606511813044,-1.708339246909671] # err = 146.44865296253823
+B2p = [0.008734916450474627,-4.019848955485303] # err = 52.93424774558856
+## Old params (Small part only)
+#A1p = [0.0020680475510323967,-7.459194297264942]
+#B1p = [0.008817193618583824,-4.63981885658602]
+#A2p = [0.0022655544150686335,-1.974251537515449]
+#B2p = [0.00875250101106832,-4.737330347555451]
 
 
 import sys,time
@@ -166,7 +171,7 @@ def accessSensor():
         #sensorLog.append(newLog)
 
 
-        approachCharacteristic._value = ("%d,%d,%d,%d"%(s1A,s1B,s2A,s2B)).encode()
+        approachCharacteristic._value = ("%d,%d,%d,%d,%d"%(g1+g2+g3+g4,s1A,s1B,s2A,s2B)).encode()
         #approachCharacteristic._value = str(int(g1+g2+g3+g4)).encode()
         if approachCharacteristic._updateValueCallback:
 
